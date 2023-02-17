@@ -19,13 +19,12 @@
 		// This callback cleans up the observer
 		return () => resizeObserver.unobserve(boxEl)
 	})
-	$: console.log('boxSize :>> ', $boxSize)
 </script>
 
 <main>
 	<section class="container" bind:this={boxEl}>
 		<h1>Test</h1>
-		<!-- <Chart /> -->
+		<Chart />
 	</section>
 </main>
 
