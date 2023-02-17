@@ -1,11 +1,11 @@
 <script>
+	import { boxSize } from '../stores/size-store'
 	import Svg from './svg.svelte'
 </script>
 
-<Svg svgWidth={900} svgHeight={750}>
+<Svg svgWidth={$boxSize.width} svgHeight={$boxSize.height}>
 	<!-- test -->
 </Svg>
 
 <style>
-	/* your styles go here */
 </style>
