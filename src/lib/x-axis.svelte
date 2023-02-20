@@ -2,19 +2,18 @@
 	import { scaleBand } from 'd3'
 
 	export let data, margins, parentSize
-	const { width, height } = parentSize
 	const { top, right, bottom, left } = margins
 	const years = Array.from(new Set(data.map((d) => d.year)))
-	const x = scaleBand()
+	$: x = scaleBand()
 		.domain(years)
 		.round(true)
 		.paddingOuter(0.15)
 		.paddingInner(0.65)
-		.range([left, width - right])
+		.range([left, parentSize.width - right])
 </script>
 
 {#each years as year}
-	<text x={x(year)} y={height - bottom}>{year}</text>
+	<text x={x(year)} y={parentSize.height - bottom}>{year}</text>
 {/each}
 
 <style>
