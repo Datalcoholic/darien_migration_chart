@@ -14,7 +14,6 @@
 		.range([left, $boxSize.width - right])
 
 	x.set(xScale)
-	$: console.log('x :>> ', x)
 </script>
 
 {#if $x}
