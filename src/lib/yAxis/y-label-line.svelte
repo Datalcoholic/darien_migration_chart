@@ -5,7 +5,6 @@
 	})
 	let textRef
 	$: textBox = textRef?.getBBox()
-	$: console.log('textBox :>> ', textBox)
 </script>
 
 {#if i === last}
@@ -25,9 +24,9 @@
 {#if textRef}
 	<line
 		x1={textBox?.x + textBox?.width}
-		y1={yLabel + textBox?.height / 2}
+		y1={yLabel + textBox?.height / 7}
 		x2={margins.left}
-		y2={yLabel + textBox?.height / 2}
+		y2={yLabel + textBox?.height / 7}
 		stroke={'brown'}
 	/>
 {/if}
