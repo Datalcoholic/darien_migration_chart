@@ -7,6 +7,7 @@ import {
 	stackOffsetNone,
 	stackOffsetSilhouette,
 	stackOffsetWiggle,
+	stackOrderAscending,
 	stackOrderDescending,
 } from 'd3'
 import { writable } from 'svelte/store'
@@ -40,13 +41,13 @@ resp = Array.from(
 	}
 )
 const dataKeys = Object.keys(resp.at(0)).slice(1)
-const stackGen = stack().keys(dataKeys).order(stackOrderDescending)
+const stackGen = stack().keys(dataKeys).order(stackOrderAscending)
 
 resp = stackGen(resp).map((d) => {
 	const arr = d.map((a) => {
 		return {
-			from: a.at(0),
-			to: a.at(1),
+			from: a.at(0) + 150, //shink the real value
+			to: a.at(1) - 150, //shink the real value
 			totalValue: a.data[d.key],
 			year: a.data.year,
 			country: d.key,
