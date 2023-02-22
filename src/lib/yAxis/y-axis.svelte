@@ -1,5 +1,5 @@
 <script>
-	import { extent, scaleLinear, nice } from 'd3'
+	import { extent, scaleLinear, nice, sum } from 'd3'
 	import { ticks } from 'd3'
 	import { y } from '../../stores/scalesStores'
 	import YLabelLine from './y-label-line.svelte'
@@ -9,13 +9,14 @@
 
 	const { top, right, bottom, left } = margins
 	const totals = data.map((d) => d.totalValue)
+	const sumTotals = sum(totals)
 	const totalsExt = extent(totals)
 	$: yScale = scaleLinear()
-		.domain(totalsExt)
+		.domain([0, sumTotals])
 		.range([$boxSize.height - bottom - top, top])
 	$: y.set(yScale)
 
-	const tickValues = ticks(0, totalsExt.at(1), 12)
+	const tickValues = ticks(0, sumTotals, 12)
 </script>
 
 <g class="y-axis-labels">
