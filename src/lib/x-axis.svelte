@@ -13,7 +13,7 @@
 		.paddingInner(0.65)
 		.range([left, $boxSize.width - right])
 
-	x.set(xScale)
+	$: x.set(xScale)
 </script>
 
 {#if $x}
