@@ -2,7 +2,11 @@ import {
 	csv,
 	group,
 	stack,
-	stackOrderAscending,
+	stackOffsetDiverging,
+	stackOffsetExpand,
+	stackOffsetNone,
+	stackOffsetSilhouette,
+	stackOffsetWiggle,
 	stackOrderDescending,
 } from 'd3'
 import { writable } from 'svelte/store'
@@ -36,7 +40,8 @@ resp = Array.from(
 	}
 )
 const dataKeys = Object.keys(resp.at(0)).slice(1)
-const stackGen = stack().keys(dataKeys).order(stackOrderAscending)
+const stackGen = stack().keys(dataKeys).order(stackOrderDescending)
+
 resp = stackGen(resp).map((d) => {
 	const arr = d.map((a) => {
 		return {
@@ -50,4 +55,5 @@ resp = stackGen(resp).map((d) => {
 
 	return arr
 })
+console.log('resp :>> ', resp)
 darien.set(resp.flat())
