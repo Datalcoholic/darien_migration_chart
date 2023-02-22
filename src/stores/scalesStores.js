@@ -1,3 +1,6 @@
 import { writable } from 'svelte/store'
 
-export const y = writable()
+const x = writable()
+const y = writable()
+
+export { y, x }
