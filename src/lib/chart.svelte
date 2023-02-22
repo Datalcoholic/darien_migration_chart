@@ -12,7 +12,7 @@
 <Svg svgWidth={$boxSize.width} svgHeight={$boxSize.height}>
 	<XAxis data={$darien} {margins} />
 	<YAxis data={$darien} {margins} />
-	<Area />
+	<Area {margins} />
 </Svg>
 
 <style>
