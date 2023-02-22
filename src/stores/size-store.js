@@ -1,3 +1,3 @@
 import { writable } from 'svelte/store'
 
-export const boxSize = writable({ width: 500, height: 500 })
+export const boxSize = writable({ width: 1000, height: 0 })
