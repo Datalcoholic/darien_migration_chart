@@ -1,6 +1,7 @@
 <script>
 	import {
 		area,
+		curveBumpX,
 		curveMonotoneX,
 		extent,
 		group,
@@ -9,7 +10,8 @@
 	} from 'd3'
 	import { darien } from '../stores/dataStore'
 	import { x, y } from '../stores/scalesStores'
-
+	import { boxSize } from '../stores/size-store'
+	export let margins
 	const countryColors = {
 		atomic_tangerine: 'hsla(19, 99%, 71%, 1)',
 		ash_gray: 'hsla(72, 15%, 74%, 1)',
@@ -25,10 +27,7 @@
 	const fillPalette = scaleOrdinal().domain(countryDomain).range(colorNames)
 	const valuesExt = extent($darien, (d) => d.totalValue)
 
-	// Para que el grafico apilado no sobrepase al eje se utiliza una scalal linear donde el dominio es desde 0 hasta el valos maximos de los valores despues de apilar y el rango es desde 0 hasta la sumatoria de los valores
-	$: yScale = scaleLinear().domain([0, 248284]).range([0, 404516])
-
-	const seriesWidth = 95
+	const seriesWidth = 80
 	// Se generan 2 puntos extras unos antes del punto y otro despues del puntos del eje x
 	$: transformedData = $darien.map((d) => {
 		const before = { ...d, x: $x(d.year) - seriesWidth }
@@ -37,9 +36,9 @@
 	})
 	$: areaGen = area()
 		.x((d) => d.x)
-		.y0((d) => $y(yScale(d.from)))
-		.y1((d) => $y(yScale(d.to)))
-		.curve(curveMonotoneX)
+		.y0((d) => $y(d.from))
+		.y1((d) => $y(d.to))
+		.curve(curveBumpX)
 
 	$: groupedDataNew = Array.from(
 		group(transformedData.flat(2), (d) => d.country),
