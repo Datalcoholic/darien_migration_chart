@@ -24,7 +24,6 @@
 	$: y.set(yScale)
 
 	const tickValues = ticks(0, totalMax.at(1), 10)
-	console.log('tickValues :>> ', tickValues)
 </script>
 
 <g class="y-axis-labels">
