@@ -16,13 +16,29 @@
 	$: x.set(xScale)
 </script>
 
-{#if $x}
-	<!-- content here -->
-	{#each years as year}
-		<text x={$x(year)} y={$boxSize.height - bottom}>{year}</text>
-	{/each}
-{/if}
+<g class="x-labels">
+	{#if $x}
+		<g>
+			{#each years as year}
+				<text class="x-label" x={$x(year)} y={$boxSize.height - bottom}
+					>{year}</text
+				>
+			{/each}
+		</g>
+	{/if}
+</g>
 
 <style>
-	/* your styles go here */
+	.x-labels {
+		stroke: var(--antiflash-white-1);
+		stroke-width: 1.5px;
+		paint-order: stroke;
+		font-weight: 400;
+		font-size: var(--font-axis-size);
+		letter-spacing: -1.8px;
+		fill: var(--antiflash-grey);
+	}
+	.x-label {
+		alignment-baseline: ideographic;
+	}
 </style>
