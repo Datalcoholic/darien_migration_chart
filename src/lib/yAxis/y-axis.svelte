@@ -23,7 +23,8 @@
 		.range([$boxSize.height - bottom - top, top])
 	$: y.set(yScale)
 
-	const tickValues = ticks(0, sumTotals, 10)
+	const tickValues = ticks(0, totalMax.at(1), 10)
+	console.log('tickValues :>> ', tickValues)
 </script>
 
 <g class="y-axis-labels">
