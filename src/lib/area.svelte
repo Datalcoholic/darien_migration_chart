@@ -9,7 +9,7 @@
 		scaleLinear,
 		scaleOrdinal,
 	} from 'd3'
-	import { darien } from '../stores/dataStore'
+	import { darien, quadtreeData } from '../stores/dataStore'
 	import { x, y } from '../stores/scalesStores'
 	import { boxSize } from '../stores/size-store'
 	export let margins
@@ -43,8 +43,14 @@
 	$: transformedData = $darien.map((d) => {
 		const before = { ...d, x: ($x ? $x(d.year) : null) - seriesWidth }
 		const after = { ...d, x: ($x ? $x(d.year) : null) + seriesWidth }
-		return [before, after]
+		return [
+			before.x < margins.left ? { ...d, x: margins.left + 15 } : before,
+			after,
+		]
 	})
+
+	$: quadtreeData.set(transformedData)
+
 	let areaGen
 	$: if ($y)
 		areaGen = area()
