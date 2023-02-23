@@ -11,7 +11,7 @@
 		.round(true)
 		.paddingOuter(0.15)
 		.paddingInner(0.65)
-		.range([left, $boxSize.width - right])
+		.range([left, $boxSize.width - right - left])
 
 	$: x.set(xScale)
 </script>
