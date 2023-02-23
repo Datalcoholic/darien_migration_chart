@@ -30,7 +30,7 @@
 	{#each tickValues as tValue, i}
 		<YLabelLine
 			label={tValue}
-			xLabel={$boxSize.width - right}
+			xLabel={left}
 			yLabel={$y(tValue)}
 			{margins}
 			{i}
