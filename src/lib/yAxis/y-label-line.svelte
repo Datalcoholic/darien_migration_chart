@@ -7,20 +7,22 @@
 	$: textBox = textRef?.getBBox()
 </script>
 
-{#if i === last}
-	<text
-		x={xLabel - 10}
-		y={yLabel}
-		bind:this={textRef}
-		style="text-anchor:middle"
-	>
-		{`${numberFormat.format(label)} Migrantes`}
-	</text>
-{:else}
-	<text x={xLabel} y={yLabel} bind:this={textRef}
-		>{numberFormat.format(label)}
-	</text>
-{/if}
+<g class="label">
+	{#if i === last}
+		<text
+			x={xLabel - 10}
+			y={yLabel}
+			bind:this={textRef}
+			style="text-anchor:end"
+		>
+			{`${numberFormat.format(label)} Migrantes`}
+		</text>
+	{:else}
+		<text x={xLabel} y={yLabel} bind:this={textRef} style="text-anchor:end"
+			>{numberFormat.format(label)}
+		</text>
+	{/if}
+</g>
 {#if textRef}
 	<line
 		x1={textBox?.x + textBox?.width}
@@ -32,5 +34,18 @@
 {/if}
 
 <style>
-	/* your styles go here */
+	.label {
+		stroke: var(--antiflash-white-1);
+		stroke-width: 1.5px;
+		paint-order: stroke;
+		font-weight: 400;
+		font-size: var(--font-axis-size);
+		letter-spacing: -1.8px;
+		fill: var(--antiflash-grey);
+	}
+
+	line {
+		stroke: var(--antiflash-white-1);
+		stroke-width: 0.5px;
+	}
 </style>
