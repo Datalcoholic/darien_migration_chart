@@ -5,6 +5,7 @@
 		curveMonotoneX,
 		extent,
 		group,
+		scaleBand,
 		scaleLinear,
 		scaleOrdinal,
 	} from 'd3'
@@ -27,23 +28,35 @@
 	const fillPalette = scaleOrdinal().domain(countryDomain).range(colorNames)
 	const valuesExt = extent($darien, (d) => d.totalValue)
 
+	// const years = Array.from(new Set($darien.map((d) => d.year)))
+	// $: xScale = scaleBand()
+	// 	.domain(years)
+	// 	.round(true)
+	// 	.paddingOuter(0.15)
+	// 	.paddingInner(0.65)
+	// 	.range([margins.left, $boxSize.width - margins.right])
+
+	// $: x.set(xScale)
+
 	const seriesWidth = 80
 	// Se generan 2 puntos extras unos antes del punto y otro despues del puntos del eje x
 	$: transformedData = $darien.map((d) => {
-		const before = { ...d, x: $x(d.year) - seriesWidth }
-		const after = { ...d, x: $x(d.year) + seriesWidth }
+		const before = { ...d, x: ($x ? $x(d.year) : null) - seriesWidth }
+		const after = { ...d, x: ($x ? $x(d.year) : null) + seriesWidth }
 		return [before, after]
 	})
-	$: areaGen = area()
-		.x((d) => d.x)
-		.y0((d) => $y(d.from))
-		.y1((d) => $y(d.to))
-		.curve(curveBumpX)
+	let areaGen
+	$: if ($y)
+		areaGen = area()
+			.x((d) => d.x)
+			.y0((d) => $y(d.from))
+			.y1((d) => $y(d.to))
+			.curve(curveBumpX)
 
 	$: groupedDataNew = Array.from(
 		group(transformedData.flat(2), (d) => d.country),
 		([key, value]) => {
-			const d = areaGen(value)
+			const d = areaGen ? areaGen(value) : null
 			return {
 				key,
 				d,
