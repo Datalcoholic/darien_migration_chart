@@ -6,13 +6,13 @@
 	import XAxis from './x-axis.svelte'
 	import YAxis from './yAxis/y-axis.svelte'
 
-	const margins = { top: 35, right: 50, bottom: 35, left: 25 }
+	const margins = { top: 35, right: 20, bottom: 35, left: 15 }
 </script>
 
 <Svg svgWidth={$boxSize.width} svgHeight={$boxSize.height}>
-	<XAxis data={$darien} {margins} />
-	<YAxis data={$darien} {margins} />
 	<Area {margins} />
+	<YAxis data={$darien} {margins} />
+	<XAxis data={$darien} {margins} />
 </Svg>
 
 <style>
