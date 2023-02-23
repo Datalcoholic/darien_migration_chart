@@ -34,7 +34,7 @@
 	}
 	.container {
 		width: clamp(650px, 100vw, 1000px);
-		height: 95vh;
-		outline: 2px solid brown;
+		height: 90vh;
+		/* outline: 2px solid brown; */
 	}
 </style>
