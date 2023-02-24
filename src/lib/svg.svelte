@@ -8,6 +8,6 @@
 
 <style>
 	svg {
-		outline: 1px solid cornflowerblue;
+		margin: -15px 0 0 0;
 	}
 </style>
