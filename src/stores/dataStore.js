@@ -12,7 +12,9 @@ import {
 } from 'd3'
 import { writable } from 'svelte/store'
 
-export const darien = writable()
+const darien = writable()
+const quadtreeData = writable()
+const dataForBoxes = writable()
 
 let resp = await csv(
 	'https://raw.githubusercontent.com/Datalcoholic/darien_migration_chart/master/data/darien_2019-2022_clean.csv',
@@ -58,3 +60,5 @@ resp = stackGen(resp).map((d) => {
 })
 console.log('resp :>> ', resp)
 darien.set(resp.flat())
+
+export { darien, quadtreeData, dataForBoxes }
