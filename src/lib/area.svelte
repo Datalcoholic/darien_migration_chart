@@ -9,9 +9,10 @@
 		scaleLinear,
 		scaleOrdinal,
 	} from 'd3'
-	import { darien, quadtreeData } from '../stores/dataStore'
+	import { darien, quadtreeData, dataForBoxes } from '../stores/dataStore'
 	import { x, y } from '../stores/scalesStores'
 	import { boxSize } from '../stores/size-store'
+	import Labels from './labels.svelte'
 	export let margins
 	const countryColors = {
 		atomic_tangerine: 'hsla(19, 99%, 71%, 1)',
@@ -50,6 +51,7 @@
 	})
 
 	$: quadtreeData.set(transformedData)
+	$: dataForBoxes.set(transformedData)
 
 	let areaGen
 	$: if ($y)
@@ -77,6 +79,7 @@
 		<path d={d.d} fill={countryColors[d.fill]} />
 	{/each}
 </g>
+<Labels fillScale={fillPalette} palette={countryColors} />
 
 <style>
 	.area-series {
