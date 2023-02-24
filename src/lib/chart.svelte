@@ -14,6 +14,7 @@
 	<Area {margins} />
 	<YAxis data={$darien} {margins} />
 	<XAxis data={$darien} {margins} />
+
 	<!-- <Quadtree {margins} /> -->
 </Svg>
 
