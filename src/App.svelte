@@ -23,7 +23,7 @@
 
 <main>
 	<section class="container" bind:this={boxEl}>
-		<h1>Test</h1>
+		<h2>Migrantes en transito por el Darien por pais de origen</h2>
 		<Chart />
 	</section>
 </main>
@@ -36,5 +36,8 @@
 		width: clamp(650px, 100vw, 1000px);
 		height: 90vh;
 		/* outline: 2px solid brown; */
+	}
+	h2 {
+		margin: 10px 0 0 0;
 	}
 </style>
