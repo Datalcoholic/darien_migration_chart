@@ -30,35 +30,19 @@ let resp = await csv(
 resp = Array.from(
 	group(resp, (d) => d.year),
 	([key, value]) => {
-		let obj = {}
-		let values = value
+		const vals = value
 			.sort((a, b) => b.total - a.total)
-			.forEach((d) => {
-				Object.assign(obj, { [d.country]: d.total })
+			.map((d, i) => {
+				return {
+					...d,
+					order: i + 1,
+				}
 			})
-		return {
-			year: key,
-			...obj,
-		}
+		return [...vals]
 	}
 )
-const dataKeys = Object.keys(resp.at(0)).slice(1)
-const stackGen = stack().keys(dataKeys).order(stackOrderAscending)
 
-resp = stackGen(resp).map((d) => {
-	const arr = d.map((a) => {
-		return {
-			from: a.at(0) + 150, //shink the real value
-			to: a.at(1) - 150, //shink the real value
-			totalValue: a.data[d.key],
-			year: a.data.year,
-			country: d.key,
-		}
-	})
-
-	return arr
-})
 console.log('resp :>> ', resp)
-darien.set(resp.flat())
+darien.set(resp.flat(1))
 
 export { darien, quadtreeData, dataForBoxes }
