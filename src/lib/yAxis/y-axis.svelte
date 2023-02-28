@@ -11,7 +11,7 @@
 	const orderValues = Array.from(new Set(data.map((d) => d.order))).reverse()
 	console.log('orderValues :>> ', orderValues)
 	$: yScale = scaleBand()
-		.paddingOuter(0.1)
+		.paddingOuter(0.9)
 		.paddingInner(0.5)
 		.domain(orderValues)
 		.range([$boxSize.height - bottom - top, top])

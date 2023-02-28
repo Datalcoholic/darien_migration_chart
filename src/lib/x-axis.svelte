@@ -10,7 +10,7 @@
 		.domain(years)
 		.round(true)
 		.paddingOuter(0.15)
-		.paddingInner(0.65)
+		.paddingInner(2)
 		.range([left, $boxSize.width - right - left])
 
 	$: x.set(xScale)
