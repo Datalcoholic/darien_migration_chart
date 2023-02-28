@@ -1,18 +1,18 @@
 <script>
 	import {
 		area,
+		cross,
 		curveBumpX,
-		curveMonotoneX,
 		extent,
 		group,
-		scaleBand,
-		scaleLinear,
+		polygonArea,
+		polygonCentroid,
+		polygonHull,
 		scaleOrdinal,
+		scaleSqrt,
 	} from 'd3'
-	import { darien, quadtreeData, dataForBoxes } from '../stores/dataStore'
+	import { darien, dataForBoxes, quadtreeData } from '../stores/dataStore'
 	import { x, y } from '../stores/scalesStores'
-	import { boxSize } from '../stores/size-store'
-	import Labels from './labels.svelte'
 	export let margins
 	const countryColors = {
 		atomic_tangerine: 'hsla(19, 99%, 71%, 1)',
@@ -29,21 +29,12 @@
 	const fillPalette = scaleOrdinal().domain(countryDomain).range(colorNames)
 	const valuesExt = extent($darien, (d) => d.totalValue)
 
-	// const years = Array.from(new Set($darien.map((d) => d.year)))
-	// $: xScale = scaleBand()
-	// 	.domain(years)
-	// 	.round(true)
-	// 	.paddingOuter(0.15)
-	// 	.paddingInner(0.65)
-	// 	.range([margins.left, $boxSize.width - margins.right])
-
-	// $: x.set(xScale)
-
-	const seriesWidth = 80
+	const seriesWidth = 40
 	// Se generan 2 puntos extras unos antes del punto y otro despues del puntos del eje x
+	// NOTE: La manera en que se procesan los ptos para top y bottoms para cada area en este script es engorrosa
 	$: transformedData = $darien.map((d) => {
-		const before = { ...d, x: ($x ? $x(d.year) : null) - seriesWidth }
-		const after = { ...d, x: ($x ? $x(d.year) : null) + seriesWidth }
+		const before = { ...d, x: $x ? $x(d.year) : null }
+		const after = { ...d, x: $x ? $x(d.year) : null }
 		return [
 			before.x < margins.left ? { ...d, x: margins.left + 15 } : before,
 			after,
@@ -56,33 +47,120 @@
 	let areaGen
 	$: if ($y)
 		areaGen = area()
-			.x((d) => d.x)
-			.y0((d) => $y(d.from))
-			.y1((d) => $y(d.to))
+			.x0((d) => d.x0)
+			.x1((d) => d.x1)
+			.y0((d) => d.y0)
+			.y1((d) => d.y1)
 			.curve(curveBumpX)
 
+	const totalsExt = extent($darien, (d) => d.total)
+	$: rectSizeScale = scaleSqrt()
+		.domain([0, totalsExt.at(1)])
+		.range([10, 80])
 	$: groupedDataNew = Array.from(
-		group(transformedData.flat(2), (d) => d.country),
+		group(boxes.flat(2), (d) => d.country),
 		([key, value]) => {
-			const d = areaGen ? areaGen(value) : null
+			const points = value.map((d) => {
+				const top = [
+					{ x0: d.box.at(0).at(0), y0: d.box.at(0).at(1) },
+					{ x0: d.box.at(3).at(0), y0: d.box.at(3).at(1) },
+					{ x0: d.box.at(4).at(0), y0: d.box.at(4).at(1) },
+					{ x0: d.box.at(6).at(0), y0: d.box.at(6).at(1) },
+				]
+				const bottom = [
+					{ x1: d.box.at(1).at(0), y1: d.box.at(1).at(1) },
+					{ x1: d.box.at(2).at(0), y1: d.box.at(2).at(1) },
+					{ x1: d.box.at(5).at(0), y1: d.box.at(5).at(1) },
+					{ x1: d.box.at(7).at(0), y1: d.box.at(7).at(1) },
+				]
+				// se hacen la permutaciones de todos los puntos generados.
+				// para que retorne en un misno objeto tanto los x's tops y x's bottoms
+				let permuted = cross(top, bottom, (a, b) =>
+					// Solo retona los puntos permutados en los cuales x0 y x1 son iguales
+					a.x0 === b.x1 ? { ...a, ...b } : undefined
+				)
+				permuted = permuted
+					.filter((d) => d !== undefined)
+					.sort((a, b) => a.x0 - b.x0)
+				return [...permuted]
+			})
+
+			const d = areaGen ? areaGen(points.flat(1)) : null
+			// const d = areaGen ? areaGen(areaPoints) : null
+
 			return {
 				key,
 				d,
+				value,
 				fill: fillPalette(key),
 			}
 		}
 	)
+	const gapX = 18
+	const gapY = 5
+	// generar puntos pre y post y antes pre y despues pro para las areas de las series
+	$: boxes = $dataForBoxes.map((d) => {
+		const x1 = d.at(0).x - rectSizeScale(d.at(0).total) / 2
+		const x2 = d.at(1).x + rectSizeScale(d.at(0).total) / 2
+		const x3 = d.at(0).x - gapX
+		const x4 = d.at(1).x + gapX
+		const width = Math.abs(x2 - x1)
+		const y1 = $y ? $y(d.at(1).order) - rectSizeScale(d.at(0).total) / 2 : null
+		const y2 = $y ? $y(d.at(1).order) + rectSizeScale(d.at(0).total) / 2 : null
+		const y3 = $y
+			? $y(d.at(1).order) + gapY //rectSizeScale(d.at(0).total) * 0.4
+			: null
+		const y4 = $y
+			? $y(d.at(1).order) - gapY //rectSizeScale(d.at(0).total) * 0.4
+			: null
+		const height = Math.abs(y2 - y1)
+
+		const box = [
+			[x1, y1], // pto pre top
+			[x1, y2], // pto pre bottom
+			[x2, y2], // pto post top
+			[x2, y1], // pto post bottom
+			[x3, y4], // pto antes pre  top
+			[x3, y3], // pto antes pre bottom
+			[x4, y4], // pto despues post top
+			[x4, y3], // pto despues post bottom
+		]
+		const { total, year, country, _ } = d.at(0)
+		const polygon = polygonHull(box)
+		return {
+			width,
+			height,
+			box,
+			total,
+			year,
+			country,
+			centroid: polygonCentroid(polygon),
+			polygon,
+			area: polygonArea(polygon),
+			fill: fillPalette(country),
+		}
+	})
 </script>
 
 <g class="area-series">
 	{#each groupedDataNew as d}
-		<path d={d.d} fill={countryColors[d.fill]} />
+		<path class="serie" d={d.d} fill={countryColors[d.fill]} />
+	{/each}
+
+	{#each boxes as box}
+		<rect
+			x={box.box.at(0).at(0)}
+			y={box.box.at(0).at(1)}
+			width={box.width}
+			height={box.height}
+			fill={countryColors[box.fill]}
+			rx={5}
+		/>
 	{/each}
 </g>
-<Labels fillScale={fillPalette} palette={countryColors} />
 
 <style>
-	.area-series {
-		stroke: white;
+	.serie {
+		opacity: 0.45;
 	}
 </style>
