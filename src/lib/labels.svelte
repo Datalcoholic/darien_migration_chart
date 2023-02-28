@@ -70,7 +70,7 @@
 	}
 	const labelFormat = new Intl.NumberFormat('es-VE')
 	// $: test = filter(valueLabels, (d) => d.area === max(d, (d) => d.area))
-	$: console.log('test :>> ', valueLabels)
+	// $: console.log('test :>> ', valueLabels)
 </script>
 
 <!-- {#each valueLabels as box}
