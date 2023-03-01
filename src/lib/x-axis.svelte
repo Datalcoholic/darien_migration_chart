@@ -20,7 +20,7 @@
 	{#if $x}
 		<g>
 			{#each years as year}
-				<text class="x-label" x={$x(year)} y={$boxSize.height - bottom}
+				<text class="x-label" x={$x(year)} y={$boxSize.height - bottom - top}
 					>{year}</text
 				>
 			{/each}

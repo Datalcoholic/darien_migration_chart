@@ -3,7 +3,7 @@
 </script>
 
 <g class="footer">
-	<text x={margins.left} y={height - margins.bottom + margins.top}>
+	<text x={margins.left} y={height - margins.bottom}>
 		<tspan class="bold">Data:</tspan> Migración Panama
 	</text>
 </g>
