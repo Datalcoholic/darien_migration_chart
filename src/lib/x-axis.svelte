@@ -37,6 +37,7 @@
 		font-size: var(--font-axis-size);
 		letter-spacing: -1.8px;
 		fill: var(--antiflash-grey);
+		text-anchor: middle;
 	}
 	.x-label {
 		alignment-baseline: ideographic;
