@@ -96,22 +96,26 @@
 			}
 		}
 	)
-	const gapX = 18
+	const gapX = 30
 	const gapY = 5
 	// generar puntos pre y post y antes pre y despues pro para las areas de las series
 	$: boxes = $dataForBoxes.map((d) => {
 		const x1 = d.at(0).x - rectSizeScale(d.at(0).total) / 2
 		const x2 = d.at(1).x + rectSizeScale(d.at(0).total) / 2
-		const x3 = d.at(0).x - gapX
-		const x4 = d.at(1).x + gapX
+		const x3 = d.at(0).year === '2019' ? d.at(0).x : d.at(0).x - gapX
+		const x4 = d.at(0).year === '2022' ? d.at(0).x : d.at(1).x + gapX
 		const width = Math.abs(x2 - x1)
-		const y1 = $y ? $y(d.at(1).order) - rectSizeScale(d.at(0).total) / 2 : null
-		const y2 = $y ? $y(d.at(1).order) + rectSizeScale(d.at(0).total) / 2 : null
+		const y1 = $y
+			? $y(d.at(1).order) - rectSizeScale(d.at(0).total) / 2 - gapY
+			: null
+		const y2 = $y
+			? $y(d.at(1).order) + rectSizeScale(d.at(0).total) / 2 + gapY
+			: null
 		const y3 = $y
-			? $y(d.at(1).order) + gapY //rectSizeScale(d.at(0).total) * 0.4
+			? $y(d.at(1).order) + (rectSizeScale(d.at(0).total) / 2 - gapY) * 1.2 //rectSizeScale(d.at(0).total) * 0.4
 			: null
 		const y4 = $y
-			? $y(d.at(1).order) - gapY //rectSizeScale(d.at(0).total) * 0.4
+			? $y(d.at(1).order) - (rectSizeScale(d.at(0).total) / 2 - gapY) * 1.2 //rectSizeScale(d.at(0).total) * 0.4
 			: null
 		const height = Math.abs(y2 - y1)
 
