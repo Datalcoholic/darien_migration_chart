@@ -74,14 +74,14 @@
 				const top = [
 					{ x0: d.box.at(0).at(0), y0: d.box.at(0).at(1) },
 					{ x0: d.box.at(3).at(0), y0: d.box.at(3).at(1) },
-					{ x0: d.box.at(4).at(0), y0: d.box.at(4).at(1) },
-					{ x0: d.box.at(6).at(0), y0: d.box.at(6).at(1) },
+					// { x0: d.box.at(4).at(0), y0: d.box.at(4).at(1) },
+					// { x0: d.box.at(6).at(0), y0: d.box.at(6).at(1) },
 				]
 				const bottom = [
 					{ x1: d.box.at(1).at(0), y1: d.box.at(1).at(1) },
 					{ x1: d.box.at(2).at(0), y1: d.box.at(2).at(1) },
-					{ x1: d.box.at(5).at(0), y1: d.box.at(5).at(1) },
-					{ x1: d.box.at(7).at(0), y1: d.box.at(7).at(1) },
+					// { x1: d.box.at(5).at(0), y1: d.box.at(5).at(1) },
+					// { x1: d.box.at(7).at(0), y1: d.box.at(7).at(1) },
 				]
 				// se hacen la permutaciones de todos los puntos generados.
 				// para que retorne en un misno objeto tanto los x's tops y x's bottoms
@@ -106,7 +106,7 @@
 			}
 		}
 	)
-	const gapX = 30
+	const gapX = 10
 	const gapY = 5
 	// generar puntos pre y post y antes pre y despues pro para las areas de las series
 	$: boxes = $dataForBoxes.map((d) => {
@@ -115,12 +115,8 @@
 		const x3 = d.at(0).year === '2019' ? d.at(0).x : d.at(0).x - gapX
 		const x4 = d.at(0).year === '2022' ? d.at(0).x : d.at(1).x + gapX
 		const width = Math.abs(x2 - x1)
-		const y1 = $y
-			? $y(d.at(1).order) - rectSizeScale(d.at(0).total) / 2 - gapY
-			: null
-		const y2 = $y
-			? $y(d.at(1).order) + rectSizeScale(d.at(0).total) / 2 + gapY
-			: null
+		const y1 = $y ? $y(d.at(1).order) - rectSizeScale(d.at(0).total) / 2 : null
+		const y2 = $y ? $y(d.at(1).order) + rectSizeScale(d.at(0).total) / 2 : null
 		const y3 = $y
 			? $y(d.at(1).order) + (rectSizeScale(d.at(0).total) / 2 - gapY) * 1.2 //rectSizeScale(d.at(0).total) * 0.4
 			: null
@@ -136,8 +132,8 @@
 			[x2, y1], // pto post bottom
 			[x3, y4], // pto antes pre  top
 			[x3, y3], // pto antes pre bottom
-			[x4, y4], // pto despues post top
-			[x4, y3], // pto despues post bottom
+			// [x4, y4], // pto despues post top
+			// [x4, y3], // pto despues post bottom
 		]
 		const { total, year, country, _ } = d.at(0)
 		const polygon = polygonHull(box)
@@ -186,7 +182,7 @@
 			width={box.width}
 			height={box.height}
 			fill={countryColors[box.fill]}
-			rx={5}
+			rx={2}
 		/>
 	{/each}
 </g>
@@ -198,7 +194,7 @@
 			width={box.width}
 			height={box.height}
 			fill={`url(#${box.country.replaceAll(' ', '-')})`}
-			rx={5}
+			rx={2}
 			stroke={paletteConstrast[box.fill]}
 			style="stroke-width:2.5; opacity:0.3"
 		/>
