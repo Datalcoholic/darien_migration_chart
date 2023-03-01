@@ -13,6 +13,7 @@
 	} from 'd3'
 	import { darien, dataForBoxes, quadtreeData } from '../stores/dataStore'
 	import { x, y } from '../stores/scalesStores'
+	import Labels from './labels.svelte'
 	import StripesPatterns from './stripes-patterns.svelte'
 	export let margins
 	const countryColors = {
@@ -156,7 +157,7 @@
 	<g class="patterns">
 		{#each groupedDataNew as pattern}
 			<StripesPatterns
-				viewbox="0,0,50,50"
+				viewbox="0,0,40,40"
 				width={'20%'}
 				height={'20%'}
 				id={pattern.key}
@@ -196,10 +197,12 @@
 			fill={`url(#${box.country.replaceAll(' ', '-')})`}
 			rx={2}
 			stroke={paletteConstrast[box.fill]}
-			style="stroke-width:2.5; opacity:0.3"
+			style="stroke-width:2.5; opacity:0.7"
 		/>
 	{/each}
 </g>
+
+<Labels {boxes} palette={countryColors} />
 
 <style>
 	.serie {
