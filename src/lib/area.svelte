@@ -13,6 +13,7 @@
 	} from 'd3'
 	import { darien, dataForBoxes, quadtreeData } from '../stores/dataStore'
 	import { x, y } from '../stores/scalesStores'
+	import StripesPatterns from './stripes-patterns.svelte'
 	export let margins
 	const countryColors = {
 		atomic_tangerine: 'hsla(19, 99%, 71%, 1)',
@@ -24,6 +25,15 @@
 		sunset: 'hsla(36, 98%, 77%, 1)',
 	}
 
+	const paletteConstrast = {
+		atomic_tangerine: 'hsla(19, 99%, 41%, 1)',
+		ash_gray: 'hsla(72, 15%, 45%, 1)',
+		air_superiority_blue: 'hsla(199, 46%, 86%, 1)',
+		carolina_blue: 'hsla(201, 51%, 39%, 1)',
+		columbia_blue: 'hsla(198, 56%, 54%, 1)',
+		tomato: 'hsla(8, 99%, 42%, 1)',
+		sunset: 'hsla(36, 98%, 40%, 1)',
+	}
 	const colorNames = Object.keys(countryColors)
 	const countryDomain = Array.from(new Set($darien.map((d) => d.country)))
 	const fillPalette = scaleOrdinal().domain(countryDomain).range(colorNames)
@@ -146,11 +156,29 @@
 	})
 </script>
 
+<defs>
+	<g class="patterns">
+		{#each groupedDataNew as pattern}
+			<StripesPatterns
+				viewbox="0,0,50,50"
+				width={'20%'}
+				height={'20%'}
+				id={pattern.key}
+				strokeWidth={20}
+				stroke={fillPalette(pattern.key)}
+				palette={paletteConstrast}
+			/>
+		{/each}
+	</g>
+</defs>
+
 <g class="area-series">
 	{#each groupedDataNew as d}
 		<path class="serie" d={d.d} fill={countryColors[d.fill]} />
 	{/each}
+</g>
 
+<g class="boxes">
 	{#each boxes as box}
 		<rect
 			x={box.box.at(0).at(0)}
@@ -159,6 +187,20 @@
 			height={box.height}
 			fill={countryColors[box.fill]}
 			rx={5}
+		/>
+	{/each}
+</g>
+<g class="pattern-boxes">
+	{#each boxes as box}
+		<rect
+			x={box.box.at(0).at(0)}
+			y={box.box.at(0).at(1)}
+			width={box.width}
+			height={box.height}
+			fill={`url(#${box.country.replaceAll(' ', '-')})`}
+			rx={5}
+			stroke={paletteConstrast[box.fill]}
+			style="stroke-width:2.5; opacity:0.3"
 		/>
 	{/each}
 </g>
