@@ -9,9 +9,8 @@
 
 	const { top, right, bottom, left } = margins
 	const orderValues = Array.from(new Set(data.map((d) => d.order))).reverse()
-	console.log('orderValues :>> ', orderValues)
 	$: yScale = scaleBand()
-		.paddingOuter(0.9)
+		.paddingOuter(0.2)
 		.paddingInner(0.5)
 		.domain(orderValues)
 		.range([$boxSize.height - bottom - top, top])
@@ -20,7 +19,7 @@
 	const tickValues = orderValues
 </script>
 
-<g class="y-axis-labels">
+<!-- <g class="y-axis-labels">
 	{#each tickValues as tValue, i}
 		<YLabelLine
 			label={tValue}
@@ -31,8 +30,7 @@
 			last={tickValues.length - 1}
 		/>
 	{/each}
-</g>
-
+</g> -->
 <style>
 	/* your styles go here */
 </style>
