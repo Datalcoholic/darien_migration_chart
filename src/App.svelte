@@ -23,7 +23,7 @@
 
 <main>
 	<section class="container" bind:this={boxEl}>
-		<h2>Migrantes en transito por el Darien por pais de origen</h2>
+		<h2>¿De donde vienen los migrantes que cruzan el Darién?</h2>
 		<Chart />
 	</section>
 </main>
@@ -39,5 +39,6 @@
 	}
 	h2 {
 		margin: 10px 0 0 0;
+		text-transform: uppercase;
 	}
 </style>
