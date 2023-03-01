@@ -2,6 +2,7 @@
 	import { darien } from '../stores/dataStore'
 	import { boxSize } from '../stores/size-store'
 	import Area from './area.svelte'
+	import Footer from './footer.svelte'
 	import Quadtree from './quadtree/quadtree.svelte'
 	import Svg from './svg.svelte'
 	import XAxis from './x-axis.svelte'
@@ -14,6 +15,7 @@
 	<Area {margins} />
 	<YAxis data={$darien} {margins} />
 	<XAxis data={$darien} {margins} />
+	<Footer {margins} height={$boxSize.height} />
 
 	<!-- <Quadtree {margins} /> -->
 </Svg>
