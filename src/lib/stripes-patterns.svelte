@@ -21,6 +21,6 @@
 
 <style>
 	line {
-		opacity: 0.3;
+		opacity: 0.7;
 	}
 </style>
