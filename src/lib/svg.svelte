@@ -8,6 +8,7 @@
 
 <style>
 	svg {
-		margin: -15px 0 0 0;
+		margin: -1px 0 0 0;
+		overflow: visible;
 	}
 </style>
